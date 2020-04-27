@@ -1,0 +1,26 @@
+gteq 0 0     = true;
+gteq 0 (s Y) = false;
+gteq (s X) 0 = true;
+gteq (s X) (s Y) = gteq X Y;
+
+evenlist nil          = nil;
+evenlist (cons X nil) = cons X nil;
+evenlist (cons X (cons Y YS)) = cons X (evenlist YS);
+oddlist nil = nil;
+oddlist (cons X nil)       = nil;
+oddlist (cons X (cons Y YS)) = cons Y (oddlist YS);
+
+merge nil nil = nil;
+merge nil (cons Y YS) = cons Y YS;
+merge (cons X XS) nil = cons X XS;
+merge (cons X XS) (cons Y YS) = if (gteq Y X) (cons X (merge XS (cons Y YS)));
+
+msort (cons X nil)         = cons X nil;
+msort (cons X (cons Y ZS)) = merge (msort (cons X (evenlist ZS))) (msort (cons Y (oddlist ZS)));
+
+if true  X = X;
+if false (cons X (cons Y nil))        = cons Y (cons X nil);
+if false (cons X (cons Y (cons Z ZS))) = cons Y (if (gteq Z X) (cons X (cons Z ZS)));
+if false (cons X (merge XS (cons Y YS))) = cons Y (merge (cons X XS) YS);
+
+main = msort [3, 5, 2, 4, 1];

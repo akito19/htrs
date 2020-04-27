@@ -1,0 +1,22 @@
+gteq 0 0 = true;
+gteq 0 (s Y) = false;
+gteq (s X) 0 = true;
+gteq (s X) (s Y) = gteq X Y;
+gt 0 0 = false;
+gt 0 Y = false;
+gt (s X) 0 = true;
+gt (s X) (s Y) = gt X Y;
+
+append nil YS = YS;
+append (cons X Y) Z = cons X (append Y Z);
+ltpivot X nil = nil;
+ltpivot X (cons Y YS) = if (gteq X Y) (cons Y (ltpivot X YS));
+gtpivot X nil = nil;
+gtpivot X (cons Y YS) = if (gt Y X) (cons Y (gtpivot X YS));
+
+qsort nil = nil;
+qsort (cons X XS) = append (qsort (ltpivot X XS)) (cons X (qsort (gtpivot X XS)));
+if true  X = X;
+if false (cons X Y) = Y;
+
+main = qsort [3, 5, 2, 4, 1];
